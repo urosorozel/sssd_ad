@@ -1,0 +1,15 @@
+---
+- name: Inspect server state
+  shell: |
+    echo "Inspect"
+
+- name: Include common tasks 
+  include_tasks: common.yml
+
+- name: Register to AD
+  include_tasks: join-ad.yml
+  when: sssd_remove is undefined
+
+- name: Unregister from AD
+  include_tasks: leave-ad.yml
+  when: sssd_remove is defined

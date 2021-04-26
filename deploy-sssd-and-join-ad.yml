@@ -1,0 +1,5 @@
+---
+- hosts: sssd
+  remote_user: root
+  roles:
+    - sssd_ad

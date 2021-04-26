@@ -1,0 +1,18 @@
+---
+ad_domain_name: netiodom.local
+ad_username: Administrator@netiodom.local 
+ad_computer_ou: ou=prod,ou=sssd
+ad_automatic_id_mapping: no
+
+sssd_domain_section: "domain/{{ ad_domain_name }}"
+sssd_domain_override:
+  use_fully_qualified_names: False
+  fallback_homedir: "/home/%u"
+  ad_access_filter: "(&(memberOf=cn=linux,cn=users,dc=netiodom,dc=local)(unixHomeDirectory=*))"
+  full_name_format: "%1$s"
+  auto_private_groups: True
+
+sssd_packages:
+  - sssd
+  - realmd
+

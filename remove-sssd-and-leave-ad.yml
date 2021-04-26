@@ -1,0 +1,7 @@
+---
+- hosts: sssd
+  remote_user: root
+  vars:
+    sssd_remove: True
+  roles:
+    - sssd_ad

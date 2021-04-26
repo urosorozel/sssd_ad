@@ -1,0 +1,8 @@
+- name: Unregister from AD
+  shell: |
+    echo "{{ ad_password }}" | realm leave --remove --verbose -U "{{ ad_username }}"
+  register: realm_leave
+  no_log: True
+  tags:
+    - sssd-unregister
+  when: realm_list.rc == 0

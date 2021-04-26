@@ -1,0 +1,10 @@
+---
+- name: Check if we are already joined to the AD
+  shell: |
+     realm list | grep realm-name
+  register: realm_list
+  failed_when: False
+  changed_when: False
+  tags:
+    - sssd-unregister
+    - sssd-register

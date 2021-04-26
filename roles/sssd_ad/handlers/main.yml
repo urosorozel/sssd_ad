@@ -1,0 +1,8 @@
+---
+- name: Restart SSSD
+  service:
+    name: sssd
+    state: restarted
+
+- name: Drop SSSD caches
+  command: sss_cache -E

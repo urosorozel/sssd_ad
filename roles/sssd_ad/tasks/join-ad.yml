@@ -1,0 +1,29 @@
+---
+- name: Install sssd packages
+  package: "{{ item }}"
+  with_items: sssd_packages
+  tags:
+    - install
+
+- name: Register to AD
+  shell: |
+    echo "{{ ad_password }}" | realm join -U "{{ ad_username }}" --computer-ou="{{ ad_computer_ou }}" --automatic-id-mapping="{{ ad_automatic_id_mapping }}" -v "{{ ad_domain_name }}" 
+  when: realm_list.rc == 1
+  register: realm_join
+  no_log: True
+  tags:
+    - sssd-register
+
+- name: Configure sssd.conf
+  ini_file:
+    path: /etc/sssd/sssd.conf
+    section: "{{ sssd_domain_section }}"
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+  with_dict: "{{ sssd_domain_override }}"
+  notify:
+    - Restart SSSD
+    - Drop SSSD caches
+  tags:
+    - sssd-register
+    - sssd-configure
